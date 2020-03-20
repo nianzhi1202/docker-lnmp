@@ -71,7 +71,7 @@ $ docker-compose up --build --force-recreate  #可以加 -d 后台运行，调�
 
 ## 4.mongo连接
 - 连接mongo：进入容器后 $ mongo，可以进入mongo，默认验证是开启的
-- 选择超级管理员：use admin
+- 选择数据库（admin数据库是默认创建的）：use admin
 - 输入验证：db.auth("root","123456")，这个账号是.env中配置的
 ​
 
