@@ -55,7 +55,7 @@ $ docker-compose up --build --force-recreate  #可以加 -d 后台运行，调�
 
 ## 3.docker常用命令
 $ systemctl start docker                      # 启动docker   
-$ docker start containername                  # 启动容器<br />
+$ docker start containername                  # 启动容器
 $ docker stop containername                   # 停止容器
 $ docker exec -it 13a676bb9bff /bin/bash      # 进入容器 此模式下输入mongo即可进入mongo
 $ docker rm containername                     # 删除容器
