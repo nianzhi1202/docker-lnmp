@@ -44,9 +44,9 @@ services:
       - default
 
   mysql:
-    build: 
+    build:
       context: ./services/mysql
-      args: 
+      args:
          MYSQL_VERSION: ${MYSQL_VERSION}
     container_name: mysql
     privileged: true
@@ -72,7 +72,7 @@ services:
     environment:
            MEMCACHED_CACHE_SIZE: "${MEMCACHED_CACHE_SIZE}"
     restart: always
-    networks: 
+    networks:
        - default
 
   redis:
@@ -107,7 +107,6 @@ services:
       - ${MONGO_CONF_DIR}:/data/configdb
       - ${LOG_DIR}/mongo/mongod.log:/var/log/mongodb/mongod.log
     restart: always
-    command: mongod --auth
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}

@@ -57,7 +57,7 @@ $ docker-compose up --build --force-recreate  #可以加 -d 后台运行，调�
 - $ systemctl start docker # 启动docker
 - $ docker start containername # 启动容器
 - $ docker stop containername # 停止容器
-- $ docker exec -it 13a676bb9bff /bin/bash # 进入容器 此模式下输入mongo即可进入mongo
+- $ docker exec -it 13a676bb9bff /bin/bash # 进入容器
 - $ docker rm containername # 删除容器
 - $ docker rmi image # 删除镜像
 
@@ -68,5 +68,10 @@ $ docker-compose up --build --force-recreate  #可以加 -d 后台运行，调�
 - $ docker-compose stop php # 停止服务
 - $ docker-compose restart php # 重启服务
 - $ docker-compose build php # 使用Dockerfile构建服务
+
+## 4.mongo连接
+- 连接mongo：进入容器后 $ mongo，可以进入mongo，默认验证是开启的
+- 选择超级管理员：use admin
+- 输入验证：db.auth("root","123456")，这个账号是.env中配置的
 ​
 
