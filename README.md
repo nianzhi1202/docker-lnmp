@@ -54,20 +54,20 @@ $ docker-compose up --build --force-recreate  #可以加 -d 后台运行，调�
 
 
 ## 3.docker常用命令
-$ systemctl start docker                      # 启动docker   
-$ docker start containername                  # 启动容器
-$ docker stop containername                   # 停止容器
-$ docker exec -it 13a676bb9bff /bin/bash      # 进入容器 此模式下输入mongo即可进入mongo
-$ docker rm containername                     # 删除容器
-$ docker rmi image                            # 删除镜像
+$ systemctl start docker                      # 启动docker   
+$ docker start containername                  # 启动容器
+$ docker stop containername                   # 停止容器    
+$ docker exec -it 13a676bb9bff /bin/bash      # 进入容器 此模式下输入mongo即可进入mongo
+$ docker rm containername                     # 删除容器
+$ docker rmi image                            # 删除镜像
 
-$ docker-compose up                           # 启动所有容器
-$ docker-compose up nginx php mysql           # 启动指定容器
-$ docker-compose up -d nginx php  mysql       # 后台运行方式启动指定容器
-$ docker-compose up --build --force-recreate  # 强制启动
+$ docker-compose up                           # 启动所有容器
+$ docker-compose up nginx php mysql           # 启动指定容器
+$ docker-compose up -d nginx php  mysql       # 后台运行方式启动指定容器
+$ docker-compose up --build --force-recreate  # 强制启动
 
-$ docker-compose start php                    # 启动服务
-$ docker-compose stop php                     # 停止服务
-$ docker-compose restart php                  # 重启服务
-$ docker-compose build php                    # 使用Dockerfile构建服务
+$ docker-compose start php                    # 启动服务
+$ docker-compose stop php                     # 停止服务
+$ docker-compose restart php                  # 重启服务
+$ docker-compose build php                    # 使用Dockerfile构建服务
 
