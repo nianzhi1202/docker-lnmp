@@ -47,14 +47,15 @@ RUN docker-php-ext-install \
 
 COPY ./extensions /tmp/extensions
 #WORKDIR /tmp/extensions #pecl 如果下载不了，可以这样用先下载，如果用了workdir下面就不用绝对路径了
-RUN pecl install /tmp/extensions/memcached-3.0.3.tgz && docker-php-ext-enable memcached
+RUN pecl install /tmp/extensions/memcached-3.0.3.tgz && docker-php-ext-enable memcached \
+&& pecl install /tmp/extensions/mongodb-1.6.0.tgz && docker-php-ext-enable mongodb
 
 # pecl安装mongodb、redis、imagick扩展
 #RUN pecl install -o -f mongodb  \
 #    && rm -rf /tmp/pear
 
 # 加入php扩展
-RUN docker-php-ext-enable memcached
+#RUN docker-php-ext-enable memcached
 
 # php swoole扩展
 #RUN cd /usr/src \
