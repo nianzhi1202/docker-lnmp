@@ -66,7 +66,8 @@ $ `docker-compose up --build --force-recreate`  #可以加 -d 后台运行，调
 - $ `docker rm containername` # 删除容器
 - $ `docker rmi image` # 删除镜像
 
-- $ `docker-compose up` # 启动所有容器 $ docker-compose up nginx php mysql # 启动指定容器
+- $ `docker-compose up` # 启动所有容器 
+- $ docker-compose up nginx php mysql # 启动指定容器
 - $ `docker-compose up -d nginx php mysql` # 后台运行方式启动指定容器 
 - $ `docker-compose up --build --force-recreate` # 强制启动
 - $ `docker-compose start php` # 启动服务
