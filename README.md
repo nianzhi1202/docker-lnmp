@@ -34,12 +34,17 @@ LNMP项目特点：
 ├── docker-compose.yml         Docker 服务配置示例文件
 ├── .env                       环境配置
 └── www                        PHP 代码目录 可在.env中nginx的WEB_DIR中任意指定
+└── compose                    docker-compose下载可能会很慢，这里附一个
 ```
 
 ## 2.快速使用
 1. 本地安装
-    1. docker、docker-compose
-    2. 阿里云docker加速：https://help.aliyun.com/document_detail/60750.html
+    1. docker 安装完成后，推荐使用阿里云docker加速：https://help.aliyun.com/document_detail/60750.html
+    2. docker-compose 可能会下载很慢，上面`compose`目录附带一个
+        1. 复制到 `/usr/local/bin`
+        2. `chmod +x /usr/local/bin/docker-compose`
+        3. `ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose`
+        4. 测试安装：`docker-compose --version`
 
 2. clone项目：
     $ `git clone https://github.com/nianzhi1202/docker-lnmp.git`
