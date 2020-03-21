@@ -37,8 +37,10 @@ LNMP项目特点：
 ```
 
 ## 2.快速使用
-1. 本地需安装
-    docker、docker-compose
+1. 本地安装
+    1. docker、docker-compose
+    2. 安装docker后，一定要使用加速器，否则可能docker-compose都下载不了！！
+    3. 阿里云docker加速：https://help.aliyun.com/document_detail/60750.html
 
 2. clone项目：
     $ `git clone https://github.com/nianzhi1202/docker-lnmp.git`
