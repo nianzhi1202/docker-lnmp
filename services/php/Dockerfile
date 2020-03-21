@@ -59,24 +59,24 @@ RUN pecl install /tmp/extensions/memcached-3.0.3.tgz && docker-php-ext-enable me
 
 # php swoole扩展
 #RUN cd /usr/src \
-#    && pecl download swoole-${SWOOLE_VER} \
-#    && tar -zxvf swoole-${SWOOLE_VER}.tgz \
-#    && cd swoole-${SWOOLE_VER} \
-#    && phpize \
-#    && ./configure --with-php-config=/usr/local/bin/php-config --enable-openssl \
-#    && make \
-#    && make install \
-#    && echo "extension=swoole.so" > /usr/local/etc/php/conf.d/swoole.ini \
-#    && rm -rf swoole-${SWOOLE_VERSION}.tgz \
-#    && rm -rf swoole-${SWOOLE_VERSION}
+    && pecl download swoole-${SWOOLE_VERSION} \
+    && tar -zxvf swoole-${SWOOLE_VERSION}.tgz \
+    && cd swoole-${SWOOLE_VERSION} \
+    && phpize \
+    && ./configure --with-php-config=/usr/local/bin/php-config --enable-openssl \
+    && make \
+    && make install \
+    && echo "extension=swoole.so" > /usr/local/etc/php/conf.d/swoole.ini \
+    && rm -rf swoole-${SWOOLE_VERSION}.tgz \
+    && rm -rf swoole-${SWOOLE_VERSION}
 
 # 安装composer并允许root用户运行
-#ENV COMPOSER_ALLOW_SUPERUSER=1
-#ENV COMPOSER_NO_INTERACTION=1
-#ENV COMPOSER_HOME=/usr/local/share/composer
-#RUN mkdir -p /usr/local/share/composer \
-#    && curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
-#    && php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer --snapshot \
-#    && rm -f /tmp/composer-setup.* \
-#    # 配置composer中国全量镜像
-#    && composer config -g repo.packagist composer https://packagist.phpcomposer.com
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV COMPOSER_NO_INTERACTION=1
+ENV COMPOSER_HOME=/usr/local/share/composer
+RUN mkdir -p /usr/local/share/composer \
+    && curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
+    && php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer --snapshot \
+    && rm -f /tmp/composer-setup.* \
+    # 配置composer中国全量镜像
+    && composer config -g repo.packagist composer https://packagist.phpcomposer.com
