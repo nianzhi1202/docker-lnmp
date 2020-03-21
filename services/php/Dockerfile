@@ -58,7 +58,7 @@ RUN pecl install /tmp/extensions/memcached-3.0.3.tgz && docker-php-ext-enable me
 #RUN docker-php-ext-enable memcached
 
 # php swoole扩展
-#RUN cd /usr/src \
+RUN cd /usr/src \
     && pecl download swoole-${SWOOLE_VERSION} \
     && tar -zxvf swoole-${SWOOLE_VERSION}.tgz \
     && cd swoole-${SWOOLE_VERSION} \
