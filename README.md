@@ -18,7 +18,7 @@ LNMP项目特点：
 │   ├── mysql                   MySQL 数据目录
 │   └── redis                   Redis 数据目录
 ├── services                    服务构建文件、配置文件目录
-│   ├── mysql                   MySQL8 配置、构建文件
+│   ├── mysql                   MySQL 配置、构建文件
 │   ├── nginx                   Nginx 配置、构建文件
 │   ├── php                     PHP 配置、构建文件
 │   ├── memcached               Memcached 配置、构建文件
