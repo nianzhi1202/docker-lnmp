@@ -39,14 +39,17 @@ services:
       - ${PHP_FPM_CONFD_DIR}:/usr/local/etc/php-fpm.d
       - ${PHP_FPM_CONF_FILE}:/usr/local/etc/php-fpm.conf #这个配置会包含PHP_FPM_CONFD_DIR中的配置
       - ${LOG_DIR}/php:/usr/local/var/log
+      - ${CRON_FILE}:/etc/crontab
+      - ${LOG_DIR}/cron/cron.log:/var/log/cron.log
     restart: always
+    command: start-cron
     networks:
       - default
 
   mysql:
-    build: 
+    build:
       context: ./services/mysql
-      args: 
+      args:
          MYSQL_VERSION: ${MYSQL_VERSION}
     container_name: mysql
     privileged: true
@@ -72,7 +75,7 @@ services:
     environment:
            MEMCACHED_CACHE_SIZE: "${MEMCACHED_CACHE_SIZE}"
     restart: always
-    networks: 
+    networks:
        - default
 
   redis:

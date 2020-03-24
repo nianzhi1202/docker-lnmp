@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# start cron
+service cron start
+
+# start "daemon"
+while true
+do
+    # watch /var/log/cron.log restarting if necessary
+    cat /var/log/cron.log & wait $!
+done

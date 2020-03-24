@@ -67,7 +67,7 @@ $ `docker-compose up --build --force-recreate`  #可以加 -d 后台运行，调
 - $ `docker rmi image` # 删除镜像
 
 - $ `docker-compose up` # 启动所有容器 
-- $ docker-compose up nginx php mysql # 启动指定容器
+- $ `docker-compose up nginx php mysql` # 启动指定容器
 - $ `docker-compose up -d nginx php mysql` # 后台运行方式启动指定容器 
 - $ `docker-compose up --build --force-recreate` # 强制启动
 - $ `docker-compose start php` # 启动服务
@@ -159,6 +159,14 @@ $ `docker-compose up --build --force-recreate`  #可以加 -d 后台运行，调
    }
    ```
 
-
+## 8.cron的使用
+1. 区分`cron`和`crond`：都是做计划任务的，不同的系统中进程名称不一样。由于容器中没有yum命令（当然也可以安装），就用了Ubuntu的apt-get下载相关应用
+2. `/etc/crontab`任务文件挂载到了`services/php/cron/crontab`，直接修改即可（和`crontab -e`的区别：百度），挂载到项目目录修改更方便
+3. 一定注意`crontab`文件的权限只能是`644`，否则任务不会被执行，如果是启动后才修改权限为644，需要进容器重启cron
+4. cron的相关命令
+    1. `service cron status` # 查看cron状态
+    2. `service cron start`  # 启动cron
+    3. `service cron stop`   # 停止cron
+5. 测试 `* * * * * root echo 123 >> /tmp/60.txt`
     
 
