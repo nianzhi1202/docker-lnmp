@@ -36,12 +36,13 @@ services:
       - "${PHP_FPM_PORT}:9000"
     volumes:
       - ${WEB_DIR}:${WEB_DIR}:rw
-      - ${PHP_CONF_DIR}:/usr/local/etc/php-fpm.d
+      - ${PHP_CONF_DIR}:/usr/local/etc/
       - ${LOG_DIR}/php:/usr/local/var/log
       - ${CRON_FILE}:/etc/crontab
       - ${LOG_DIR}/cron/cron.log:/var/log/cron.log
     restart: always
-    command: start-cron && php-fpm
+    command: start-cron
+    command: php-fpm
     networks:
       - lnmp-net
 

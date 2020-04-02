@@ -11,7 +11,7 @@ LNMP项目特点：
 5. 包含基本的已优化的配置文件
 6. **支持 MySQL+Atlas 读写分离**
 
-## 一.目录结构
+## 一. 目录结构
 
 ```
 ├── data                        数据库数据目录
@@ -42,8 +42,22 @@ LNMP项目特点：
 └── www                        PHP 代码目录 可在.env中nginx的WEB_DIR中任意指定
 └── compose                    docker-compose下载可能会很慢，这里附一个
 ```
-
-## 二.快速使用
+默认**/usr/local/etc/**目录结构
+> 该目录下是php和php-fpm的配置文件，默认的结构如下，建议把整个目录挂载出来，方便修改和调试
+> 建议：对于所有的配置文件的挂载都先生成默认文件、目录，然后再修改、调优；
+```
+├── php                                          php配置目录
+│   ├── php.ini-development                      php.ini开发环境
+│   ├── php.ini-production                       php.ini生产环境
+│   └── conf.d                                   php扩展配置目录
+│       ├── swoole.ini                           swoole扩展配置文件
+│       ├── docker-php-ext-mongodb.ini           mongodb扩展配置文件 
+│       └── ... 
+├── php-fpm.conf                                 php-fpm配置文件
+├── php-fpm.conf.default                         
+├── php-fpm.d                                    php-fpm.conf可以包含该目录下的相关文件             
+```
+## 二. 快速使用
 1. 本地安装
     1. docker 安装完成后，推荐使用阿里云docker加速：https://help.aliyun.com/document_detail/60750.html
     2. docker-compose 可能会下载很慢，上面`compose`目录附带一个
@@ -64,7 +78,7 @@ LNMP项目特点：
     1. $ `docker network create --driver bridge lnmp-net` # 创建自定义bridge网络，这个**lnmp-net**在yml配置中用得到
     2. $ `docker-compose up --build --force-recreate`  #可以加 -d 后台运行，调试时不用加，方便查看日志；--force-recreate 这个参数也是为了调试方便，生产一定不用
 
-## 三.docker常用命令
+## 三. docker常用命令
 - $ `systemctl start docker`    # 启动docker
 - $ `docker start containername` # 启动容器
 - $ `docker stop containername` # 停止容器
@@ -81,7 +95,7 @@ LNMP项目特点：
 - $ `docker-compose restart php` # 重启服务
 - $ `docker-compose build php` # 使用Dockerfile构建服务
 
-## 四.docker网络模式
+## 四. docker网络模式
 > docker 网络模式是学习docker不可或缺的一部分，搞懂这块才能轻松应对容器间的连接
 + 研读官方文档 `https://docs.docker.com/network/bridge`
 + 常用命令
@@ -96,7 +110,7 @@ LNMP项目特点：
 2. 多个容器可以使用同一个docker-compose.yml是无需使用--link来连接的
 3. 本实例使用都是自定义bridge，关于docker网络模式更多知识，自行查阅文档
      
-## 五.Mysql基本操作
+## 五. Mysql基本操作
 + 远程连接需要进入容器登录mysql授权
     + $ `docker exec -it mysql /bin/bash`
     + $ `mysql -uroot -p123456`
@@ -104,7 +118,7 @@ LNMP项目特点：
     + $ `flush privileges;`
     + $ `select host,user,plugin,authentication_string from mysql.user;` # 查看 %
 
-## 六.mongo基本操作
+## 六. mongo基本操作
 + 命令行连接mongo
     + $ `docker exec -it 容器 /bin/bash`
     + $ `mongo` 即可操作mongo命令行
@@ -136,13 +150,13 @@ LNMP项目特点：
         ?>
     ```
     
-## 七.nginx配置说明
+## 七. nginx配置说明
 + 默认的nginx配置已支持yii2的运行
 + 如项目放在 `/var/www/order`
     + .env中，`WEB_DIR=/var/www/order`
     + nginx.conf中， `root /var/www/order/backend/web;`
 
-## 八.memcached使用
+## 八. memcached使用
 1. mem常用的php客户端有两个：`memcached`和`memcache`，这里使用`memcached`
 2. yii2默认支持`memcached`作为缓存系统，只需如下配置：在`common/config/main-local.php`中
     ```
@@ -162,7 +176,7 @@ LNMP项目特点：
 3. 其他框架的环境正常连接即可，只需注意host是容器的名称，不能使用ip
 
 
-## 九.redis使用
+## 九. redis使用
 1. 使用`predis`客户端，直接在项目中`composer require predis/predis`安装即可
 2. 连接测试，需注意host是容器名称
    ```
@@ -188,7 +202,7 @@ LNMP项目特点：
    }
    ```
 
-## 十.cron的使用
+## 十. cron的使用
 1. 区分`cron`和`crond`：都是做计划任务的，不同的系统中进程名称不一样。由于容器中没有yum命令（当然也可以安装），就用了Ubuntu的apt-get下载相关应用
 2. `/etc/crontab`任务文件挂载到了`services/php/cron/crontab`，直接修改即可（和`crontab -e`的区别：百度），挂载到项目目录修改更方便
 3. 一定注意`crontab`文件的权限只能是`644`，否则任务不会被执行，如果是启动后才修改权限为644，需要进容器重启cron
@@ -198,7 +212,7 @@ LNMP项目特点：
     3. `service cron stop`   # 停止cron
 5. 测试 `* * * * * root echo 123 >> /tmp/60.txt`
     
-## 十一.基于docker的mysql配置主从同步
+## 十一. 基于docker的mysql配置主从同步
 ### 配置文件
 1. 关键点
     ```
@@ -252,7 +266,7 @@ mysql> show slave status\G;
 ```
 5. 到此主从就可以正常使用了，**平滑重启mysql** `docker stop name`、`docker start name`，不要去--force-recreate，这样就只能重新查看File、Position来重新配置了
 
-## 十二.主从同步的基础上加入atlas
+## 十二. 主从同步的基础上加入atlas
 ### 安装前
 0. `atlas` 官方文档 `https://github.com/Qihoo360/Atlas/wiki`
 1. 本实例是在`centos`镜像下使用使用官方推荐的rpm方式安装了`atlas`
@@ -307,3 +321,6 @@ mysql> SELECT * FROM backends
     1. IP：192.168.157.134 主机的ip
     2. 端口：1234  atlas配置文件中的 `proxy-address`
     3. 用户：atlas配置文件中的 `pwds` 
+
+## 十三. 官方文档
+1. `https://docs.docker.com/compose/compose-file/` # `docker-compose.yml`规范文档

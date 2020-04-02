@@ -16,7 +16,7 @@ services:
       - ${DATA_DIR}/mysql-cluster/master/:/var/lib/mysql/
     restart: always
     networks:
-      - default
+      - lnmp-net
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
 
@@ -36,7 +36,7 @@ services:
       - ${DATA_DIR}/mysql-cluster/slave/:/var/lib/mysql/
     restart: always
     networks:
-      - default
+      - lnmp-net
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
 
@@ -53,7 +53,8 @@ services:
       - ${LOG_DIR}/mysql-cluster/atlas/:/usr/local/mysql-proxy/log/
     restart: always
     networks:
-      - default
+      - lnmp-net
 
 networks:
-  default:
+  lnmp-net:
+    external: true
