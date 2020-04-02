@@ -1,0 +1,59 @@
+version: "3"
+services:
+  master:
+    build:
+      context: ./services/mysql-cluster/master
+      args:
+        MYSQL_VERSION: ${MYSQL_VERSION}
+    container_name: master
+    privileged: true
+    env_file: .env
+    ports:
+      - "${MYSQL_MASTER_PORT}:3306"
+    volumes:
+      - ${MYSQL_MASTER_CONF_FILE}:/etc/mysql/my.cnf
+      - ${LOG_DIR}/mysql-cluster/master/:/var/log/mysql/
+      - ${DATA_DIR}/mysql-cluster/master/:/var/lib/mysql/
+    restart: always
+    networks:
+      - default
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+
+  slave:
+    build:
+      context: ./services/mysql-cluster/slave
+      args:
+        MYSQL_VERSION: ${MYSQL_VERSION}
+    container_name: slave
+    privileged: true
+    env_file: .env
+    ports:
+      - "${MYSQL_SLAVE_PORT}:3306"
+    volumes:
+      - ${MYSQL_SLAVE_CONF_FILE}:/etc/mysql/my.cnf
+      - ${LOG_DIR}/mysql-cluster/slave/:/var/log/mysql/
+      - ${DATA_DIR}/mysql-cluster/slave/:/var/lib/mysql/
+    restart: always
+    networks:
+      - default
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+
+  centos:
+    build:
+      context: ./services/mysql-cluster/atlas
+    container_name: centos
+    privileged: true
+    env_file: .env
+    ports:
+      - "1234:1234"
+    volumes:
+      - ${ATLAS_CONF_DIR}:/usr/local/mysql-proxy/conf/
+      - ${LOG_DIR}/mysql-cluster/atlas/:/usr/local/mysql-proxy/log/
+    restart: always
+    networks:
+      - default
+
+networks:
+  default:

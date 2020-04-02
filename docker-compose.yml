@@ -17,9 +17,10 @@ services:
       - ${NGINX_CONF_FILE}:/etc/nginx/nginx.conf
       - ${NGINX_FASTCGI_PARAMS}:/etc/nginx/fastcgi_params
       - ${LOG_DIR}/nginx:/var/log/nginx/
-    restart: always
+    depends_on:
+      - php-fpm
     networks:
-      - default
+      - lnmp-net
 
   php-fpm:
     build:
@@ -35,16 +36,14 @@ services:
       - "${PHP_FPM_PORT}:9000"
     volumes:
       - ${WEB_DIR}:${WEB_DIR}:rw
-      - ${PHP_PHP_CONF_FILE}:/usr/local/etc/php/php.ini
-      - ${PHP_FPM_CONFD_DIR}:/usr/local/etc/php-fpm.d
-      - ${PHP_FPM_CONF_FILE}:/usr/local/etc/php-fpm.conf #这个配置会包含PHP_FPM_CONFD_DIR中的配置
+      - ${PHP_CONF_DIR}:/usr/local/etc/php-fpm.d
       - ${LOG_DIR}/php:/usr/local/var/log
       - ${CRON_FILE}:/etc/crontab
       - ${LOG_DIR}/cron/cron.log:/var/log/cron.log
     restart: always
-    command: start-cron
+    command: start-cron && php-fpm
     networks:
-      - default
+      - lnmp-net
 
   mysql:
     build:
@@ -62,7 +61,7 @@ services:
       - ${DATA_DIR}/mysql:/var/lib/mysql/
     restart: always
     networks:
-      - default
+      - lnmp-net
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
 
@@ -76,7 +75,7 @@ services:
            MEMCACHED_CACHE_SIZE: "${MEMCACHED_CACHE_SIZE}"
     restart: always
     networks:
-       - default
+      - lnmp-net
 
   redis:
     image: redis:${REDIS_VERSION}
@@ -93,7 +92,7 @@ services:
     environment:
        TZ: "$TZ"
     networks:
-      - default
+      - lnmp-net
 
   mongo:
     container_name: mongo
@@ -115,7 +114,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
     networks:
-      - default
+      - lnmp-net
 
 #  mongo-express:
 #    container_name: mongo-express
@@ -132,5 +131,6 @@ services:
 #      - default
 
 networks:
-  default:
+  lnmp-net:
+    external: true
 
