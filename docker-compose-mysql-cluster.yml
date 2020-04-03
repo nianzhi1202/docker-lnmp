@@ -12,8 +12,8 @@ services:
       - "${MYSQL_MASTER_PORT}:3306"
     volumes:
       - ${MYSQL_MASTER_CONF_FILE}:/etc/mysql/my.cnf
-      - ${LOG_DIR}/mysql-cluster/master/:/var/log/mysql/
-      - ${DATA_DIR}/mysql-cluster/master/:/var/lib/mysql/
+      - ${LOG_DIR}/mysql-cluster/master/error.log:/var/log/mysql/error.log:rw
+      - ${DATA_DIR}/mysql-cluster/master/:/var/lib/mysql/:rw
     restart: always
     networks:
       - lnmp-net
@@ -32,7 +32,7 @@ services:
       - "${MYSQL_SLAVE_PORT}:3306"
     volumes:
       - ${MYSQL_SLAVE_CONF_FILE}:/etc/mysql/my.cnf
-      - ${LOG_DIR}/mysql-cluster/slave/:/var/log/mysql/
+      - ${LOG_DIR}/mysql-cluster/slave/error.log:/var/log/mysql/error.log
       - ${DATA_DIR}/mysql-cluster/slave/:/var/lib/mysql/
     restart: always
     networks:

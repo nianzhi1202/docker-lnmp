@@ -56,11 +56,11 @@ RUN apt-get update && apt-get install -y cron \
     && sed --regexp-extended --in-place \
     's/^session\s+required\s+pam_loginuid.so$/session optional pam_loginuid.so/' \
     /etc/pam.d/cron
-
-COPY ./cron/start-cron /usr/sbin
-RUN chmod +x /usr/sbin/start-cron
-#Cron
-
+# Cron
+# 启动cron和php-fpm
+COPY ./start.sh /usr/sbin
+RUN chmod +x /usr/sbin/start.sh
+# 启动cron和php-fpm
 # pecl安装mongodb、redis、imagick扩展
 #RUN pecl install -o -f mongodb  \
 #    && rm -rf /tmp/pear

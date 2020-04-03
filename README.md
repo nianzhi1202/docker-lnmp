@@ -9,7 +9,7 @@ LNMP项目特点：
 3. 支持数据文件、配置文件、日志文件挂载
 4. 默认支持`pdo_mysql`、`mysqli`、`swoole`、`gd`、`curl`、`opcache`等常用扩展
 5. 包含基本的已优化的配置文件
-6. **支持 MySQL+Atlas 读写分离**
+6. 支持 MySQL+Atlas 读写分离
 
 ## 一. 目录结构
 
@@ -37,13 +37,12 @@ LNMP项目特点：
 │   └── mysql-cluster            
 ├── docker-compose.yml         Docker 默认服务配置文件，如果使用其它的，可以 docker-composer -f 文件名
 ├── docker-compose-mysql-cluster.yml              只包含mysql基于atlas读写分离
-├── docker-compose-lnmp-mysql-cluster.yml         lnmp+mysql+atlas读写分离
 ├── .env                       环境配置
 └── www                        PHP 代码目录 可在.env中nginx的WEB_DIR中任意指定
 └── compose                    docker-compose下载可能会很慢，这里附一个
 ```
-默认**/usr/local/etc/**目录结构
-> 该目录下是php和php-fpm的配置文件，默认的结构如下，建议把整个目录挂载出来，方便修改和调试
+默认 **/usr/local/etc/** 目录结构
+> 该目录下是php和php-fpm的配置文件，默认的结构如下，建议把整个目录挂载出来，方便修改和调试；<br />
 > 建议：对于所有的配置文件的挂载都先生成默认文件、目录，然后再修改、调优；
 ```
 ├── php                                          php配置目录
@@ -59,17 +58,17 @@ LNMP项目特点：
 ```
 ## 二. 快速使用
 1. 本地安装
-    1. docker 安装完成后，推荐使用阿里云docker加速：https://help.aliyun.com/document_detail/60750.html
-    2. docker-compose 可能会下载很慢，上面`compose`目录附带一个
+    1. `docker` 安装完成后，推荐使用阿里云`docker`加速：`https://help.aliyun.com/document_detail/60750.html`
+    2. `docker-compose` 可能会下载很慢，上面`compose`目录附带一个
         1. 复制到 `/usr/local/bin`
         2. `chmod +x /usr/local/bin/docker-compose`
         3. `ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose`
         4. 测试安装：`docker-compose --version`
 
-2. clone项目：
+2. `clone`项目：
     $ `git clone https://github.com/nianzhi1202/docker-lnmp.git`
 
-3. 如果不是root用户，还需将当前用户加入docker用户组：
+3. 如果不是`root`用户，还需将当前用户加入docker用户组：
     $ `sudo gpasswd -a ${USER} docker`
 
 4. 可根据项目需要自行添加其它php扩展 
@@ -107,16 +106,17 @@ LNMP项目特点：
 + bridge模式
 > bridge是默认模式也是最常用的模式，官方建议使用自定义bridge网络
 1. bridge模式下可以通过**容器名称进行容器间的通信**
-2. 多个容器可以使用同一个docker-compose.yml是无需使用--link来连接的
+2. 多个容器可以使用同一个`docker-compose.yml`是**无需使用--link**来连接的
 3. 本实例使用都是自定义bridge，关于docker网络模式更多知识，自行查阅文档
      
 ## 五. Mysql基本操作
 + 远程连接需要进入容器登录mysql授权
     + $ `docker exec -it mysql /bin/bash`
     + $ `mysql -uroot -p123456`
-    + $ `grant all privileges on *.* to 'root'@'%' identified by 'root' with grant option;`
+    + $ `select host,user,plugin,authentication_string from mysql.user;` # 查看有无 root对应 %
+    + $ `update user set host ='％' where user ='root' and host ='localhost';` # 建议这样
+    + $ `grant all privileges on *.* to 'root'@'%' identified by 'root' with grant option;` # 与update二选一
     + $ `flush privileges;`
-    + $ `select host,user,plugin,authentication_string from mysql.user;` # 查看 %
 
 ## 六. mongo基本操作
 + 命令行连接mongo
@@ -317,10 +317,42 @@ mysql> SELECT * FROM backends
 +-------------+-----------------+-------+------+
 2 rows in set (0.00 sec)
 ```
-4. `Navicat`远程连接
+4. `Navicat`远程连接`atlas`
     1. IP：192.168.157.134 主机的ip
     2. 端口：1234  atlas配置文件中的 `proxy-address`
     3. 用户：atlas配置文件中的 `pwds` 
-
+5. `yii2.0`中连接atlas，测试curd
+> 在/common/config/main-local.php中：
+ ```
+'db' => [
+    'class' => 'yii\db\Connection',
+    'dsn' => 'mysql:host=centos;port=1234;dbname=order',#用php连接atlas使用容器名
+    'username' => 'root',
+    'password' => '123456',
+    'charset' => 'utf8',
+],
+ ```
+> 测试写入
+```
+return Yii::$app->db->createCommand()->insert('user', [
+            'name' => 'Sam',
+            'age' => 30,
+            'sex' => 0
+        ])->execute();
+```
+> 通过sql日志查看读写分离是否生效
+1. 开启日志，在atlas配置文件test.cnf中
+```
+log-level = message
+log-path = /usr/local/mysql-proxy/log
+sql-log = REALTIME # sql日志需打开且模式是REALTIME（实时写入磁盘）,ON的话写入磁盘不实时，sql_test.log为空
+#sql-log-slow = 1000 # 慢日志必须关闭，否则只记录慢日志
+```
+2. 查看日志，在logs/mysql-cluster/atlas/sql_test.log
+```
+以下对比可发现读的IP是.5，写的IP是.3
+[04/03/2020 22:16:35] C:172.21.0.4:48606 S:172.21.0.5:3306 OK 102.693 "SHOW FULL COLUMNS FROM `user`"
+[04/03/2020 22:16:35] C:172.21.0.4:48606 S:172.21.0.3:3306 OK 19.518 "INSERT INTO `user` (`name`, `age`, `sex`) VALUES ('Sam', 30, '0')"
+```
 ## 十三. 官方文档
 1. `https://docs.docker.com/compose/compose-file/` # `docker-compose.yml`规范文档

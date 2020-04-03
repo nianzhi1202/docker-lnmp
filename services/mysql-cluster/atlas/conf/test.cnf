@@ -17,13 +17,13 @@ keepalive = false
 #工作线程数，对Atlas的性能有很大影响，可根据情况适当设置
 event-threads = 4
 #日志级别，分为message、warning、critical、error、debug五个级别
-log-level = error
+log-level = message
 #日志存放的路径
 log-path = /usr/local/mysql-proxy/log
 #SQL日志的开关，可设置为OFF、ON、REALTIME，OFF代表不记录SQL日志，ON代表记录SQL日志，REALTIME代表记录SQL日>志且实时写入磁盘，默认为OFF
-#sql-log = OFF
+sql-log = REALTIME
 #慢日志输出设置。当设置了该参数时，则日志只输出执行时间超过sql-log-slow（单位：ms)的日志>记录。不设置该参数则输出全部日志。
-sql-log-slow = 1000
+#sql-log-slow = 1000
 #实例名称，用于同一台机器上多个Atlas实例间的区分
 instance = test
 #Atlas监听的工作接口IP和端口，如php连接atlas就是这个端口

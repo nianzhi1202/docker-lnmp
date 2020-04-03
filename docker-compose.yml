@@ -41,8 +41,7 @@ services:
       - ${CRON_FILE}:/etc/crontab
       - ${LOG_DIR}/cron/cron.log:/var/log/cron.log
     restart: always
-    command: start-cron
-    command: php-fpm
+    command: start.sh
     networks:
       - lnmp-net
 
