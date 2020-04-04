@@ -269,21 +269,21 @@ mysql> show slave status\G;
 
 ## 十二. 主从同步的基础上加入atlas
 ### 安装前
-0. `atlas` 官方文档 `https://github.com/Qihoo360/Atlas/wiki`
-1. 本实例是在`centos`镜像下使用使用官方推荐的rpm方式安装了`atlas`
-2. 有关配置项的解释以及可能出现的问题请研读官方文档
-3. 配置文件中需要注意的点：
+1. `atlas` 官方文档 `https://github.com/Qihoo360/Atlas/wiki`
+2. 本实例是在`centos`镜像下使用使用官方推荐的rpm方式安装了`atlas`
+3. 有关配置项的解释以及可能出现的问题请研读官方文档
+4. 配置文件中需要注意的点：
     1. `proxy-backend-addresses = master:3306` # 容器名称:容器内mysql端口
     2. `proxy-read-only-backend-addresses = slave:3306@1` # 容器名称:容器内mysql端口
     3. `daemon = false` # 不要设置后台运行，当容器中没有前台进程在运行，容器会自动退出
     
 ### 安装后
-0. $ `mysql -hcentos -uroot -p12345678 -P2345` # 在mysql容器中（master或slave）尝试连接atlas
+1. $ `mysql -hcentos -uroot -p12345678 -P2345` # 在mysql容器中（master或slave）尝试连接atlas
     1. 注意：-h 不是ip而是容器名，由于atlas是基于centos镜像的，所以这里是centos
     2. -u -p 用户名和密码是在`test.cnf`中配置的管理接口的用户名、密码
     3. -P 端口是在`test.cnf`中配置的管理接口的端口
-1. $ `select * from help;` # 进入atlas后，命令帮助来显示所有命令
-2. 命令记录
+2. $ `select * from help;` # 进入atlas后，命令帮助来显示所有命令
+3. 命令记录
 ```
 mysql> select * from help;
 +----------------------------+---------------------------------------------------------+
@@ -318,11 +318,11 @@ mysql> SELECT * FROM backends
 +-------------+-----------------+-------+------+
 2 rows in set (0.00 sec)
 ```
-3. `Navicat`远程连接`atlas`
+4. `Navicat`远程连接`atlas`
     1. IP：192.168.157.134 主机的ip
     2. 端口：1234  atlas配置文件中的 `proxy-address`
     3. 用户：atlas配置文件中的 `pwds` 
-4. `yii2.0`中连接atlas，测试curd
+5. `yii2.0`中连接atlas，测试curd
 > 在/common/config/main-local.php中：
  ```
 'db' => [
@@ -341,7 +341,7 @@ return Yii::$app->db->createCommand()->insert('user', [
             'sex' => 0
         ])->execute();
 ```
-5. 通过sql日志查看读写分离是否生效
+6. 通过sql日志查看读写分离是否生效
 > 开启日志，在atlas配置文件test.cnf中
 ```
 log-level = message
