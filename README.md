@@ -214,7 +214,7 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
 6. 容器中使用cron的三种方式分析
     1. 使用主机中的cron
     2. 创建一个新容器专门用于cron
-    3. cron和其他进程共用一个容器（比如本次搭建cron和php-fpm共用一个容器）
+    3. cron和其他进程共用一个容器（比如本次搭建cron和php-fpm共用一个容器，当然docker官方不建议一个容器运行多个进程，本例是使用了shell脚本实现，也可以通过supervisor实现单容器多进程）
     
 ## 十一. 基于docker的mysql配置主从同步
 ### 配置文件
