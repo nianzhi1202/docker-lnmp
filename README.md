@@ -4,9 +4,9 @@ centos7下基于docker-compose搭建的lnmp环境，本环境搭建过程使用�
 `LNMP（Docker + Docker-compose + Nginx + MySQL5.7 + PHP7.2 + Redis5.0 + Memcached1.5 + Mongodb4.2）`
 
 LNMP项目特点：
-1. `100%`开源，易学实用
-2. `100%`遵循Docker标准
-3. 支持数据文件、配置文件、日志文件挂载
+1. 一键安装，简单实用
+2. 包含lnmp常用服务
+3. 各服务支持数据文件、配置文件、日志文件挂载
 4. 默认支持`pdo_mysql`、`mysqli`、`swoole`、`gd`、`curl`、`opcache`等常用扩展
 5. 包含基本的已优化的配置文件
 6. 支持 MySQL+Atlas 读写分离
@@ -176,7 +176,6 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
     
 3. 其他框架的环境正常连接即可，只需注意host是容器的名称，不能使用ip
 
-
 ## 九. redis使用
 1. 使用`predis`客户端，直接在项目中`composer require predis/predis`安装即可
 2. 连接测试，需注意host是容器名称
@@ -212,6 +211,10 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
     2. `service cron start`  # 启动cron
     3. `service cron stop`   # 停止cron
 5. 测试 `* * * * * root echo 123 >> /tmp/60.txt`
+6. 容器中使用cron的三种方式分析
+    1. 使用主机中的cron
+    2. 创建一个新容器专门用于cron
+    3. cron和其他进程共用一个容器（比如本次搭建cron和php-fpm共用一个容器）
     
 ## 十一. 基于docker的mysql配置主从同步
 ### 配置文件
