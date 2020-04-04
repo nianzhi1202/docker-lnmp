@@ -1,7 +1,7 @@
 # docker-lnmp
-centos7下基于docker-compose搭建的lnmp环境，本环境搭建过程使用的是yii2进行相关测试，所以默认就支持yii2的运行
+centos7下基于docker-compose搭建的lnmp环境，本环境搭建过程使用的是yii2进行相关测试，所以默认支持yii2的运行
 
-LNMP（Docker + Docker-compose + Nginx + MySQL5.7 + PHP7.2 + Redis5.0 + Memcached1.5 + Mongodb4.2）
+`LNMP（Docker + Docker-compose + Nginx + MySQL5.7 + PHP7.2 + Redis5.0 + Memcached1.5 + Mongodb4.2）`
 
 LNMP项目特点：
 1. `100%`开源，易学实用
@@ -41,7 +41,7 @@ LNMP项目特点：
 └── www                        PHP 代码目录 可在.env中nginx的WEB_DIR中任意指定
 └── compose                    docker-compose下载可能会很慢，这里附一个
 ```
-默认 **/usr/local/etc/** 目录结构
+php-fpm容器中 **/usr/local/etc/** 目录结构
 > 该目录下是php和php-fpm的配置文件，默认的结构如下，建议把整个目录挂载出来，方便修改和调试；<br />
 > 建议：对于所有的配置文件的挂载都先生成默认文件、目录，然后再修改、调优；
 ```
@@ -58,7 +58,7 @@ LNMP项目特点：
 ```
 ## 二. 快速使用
 1. 本地安装
-    1. `docker` 安装完成后，推荐使用阿里云`docker`加速：`https://help.aliyun.com/document_detail/60750.html`
+    1. `docker` 安装完成后，推荐使用阿里云`docker`加速：[https://help.aliyun.com/document_detail/60750.html](https://help.aliyun.com/document_detail/60750.html)
     2. `docker-compose` 可能会下载很慢，上面`compose`目录附带一个
         1. 复制到 `/usr/local/bin`
         2. `chmod +x /usr/local/bin/docker-compose`
@@ -96,7 +96,7 @@ LNMP项目特点：
 
 ## 四. docker网络模式
 > docker 网络模式是学习docker不可或缺的一部分，搞懂这块才能轻松应对容器间的连接
-+ 研读官方文档 `https://docs.docker.com/network/bridge`
++ 研读官方文档 [https://docs.docker.com/network/bridge](https://docs.docker.com/network/bridge)
 + 常用命令
     + $ `docker network ls` # bridge none host 三种模式
     + $ `docker network create --driver bridge lnmp-net` # **创建自定义网络**
@@ -155,6 +155,7 @@ LNMP项目特点：
 + 如项目放在 `/var/www/order`
     + .env中，`WEB_DIR=/var/www/order`
     + nginx.conf中， `root /var/www/order/backend/web;`
++ nginx和php-fpm必须挂载相同的项目目录，否则会导致静态文件可以访问，php无法访问
 
 ## 八. memcached使用
 1. mem常用的php客户端有两个：`memcached`和`memcache`，这里使用`memcached`
@@ -317,11 +318,11 @@ mysql> SELECT * FROM backends
 +-------------+-----------------+-------+------+
 2 rows in set (0.00 sec)
 ```
-4. `Navicat`远程连接`atlas`
+3. `Navicat`远程连接`atlas`
     1. IP：192.168.157.134 主机的ip
     2. 端口：1234  atlas配置文件中的 `proxy-address`
     3. 用户：atlas配置文件中的 `pwds` 
-5. `yii2.0`中连接atlas，测试curd
+4. `yii2.0`中连接atlas，测试curd
 > 在/common/config/main-local.php中：
  ```
 'db' => [
@@ -340,19 +341,19 @@ return Yii::$app->db->createCommand()->insert('user', [
             'sex' => 0
         ])->execute();
 ```
-> 通过sql日志查看读写分离是否生效
-1. 开启日志，在atlas配置文件test.cnf中
+5. 通过sql日志查看读写分离是否生效
+> 开启日志，在atlas配置文件test.cnf中
 ```
 log-level = message
 log-path = /usr/local/mysql-proxy/log
-sql-log = REALTIME # sql日志需打开且模式是REALTIME（实时写入磁盘）,ON的话写入磁盘不实时，sql_test.log为空
+sql-log = REALTIME # sql日志需开启（默认关闭）且模式是REALTIME（实时写入磁盘）,ON的话写入磁盘不实时，sql_test.log为空
 #sql-log-slow = 1000 # 慢日志必须关闭，否则只记录慢日志
 ```
-2. 查看日志，在logs/mysql-cluster/atlas/sql_test.log
+> 查看日志，在logs/mysql-cluster/atlas/sql_test.log
 ```
 以下对比可发现读的IP是.5，写的IP是.3
 [04/03/2020 22:16:35] C:172.21.0.4:48606 S:172.21.0.5:3306 OK 102.693 "SHOW FULL COLUMNS FROM `user`"
 [04/03/2020 22:16:35] C:172.21.0.4:48606 S:172.21.0.3:3306 OK 19.518 "INSERT INTO `user` (`name`, `age`, `sex`) VALUES ('Sam', 30, '0')"
 ```
 ## 十三. 官方文档
-1. `https://docs.docker.com/compose/compose-file/` # `docker-compose.yml`规范文档
+1. [https://docs.docker.com/compose/compose-file/](https://docs.docker.com/compose/compose-file/) # `docker-compose.yml`规范文档
