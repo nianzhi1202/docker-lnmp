@@ -1,0 +1,22 @@
+version: "3"
+services:
+  redis:
+    image: redis:${REDIS_VERSION}
+    container_name: redis
+    privileged: true
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - ${LOG_DIR}/redis/redis.log:/var/log/redis.log #这个文件需要在redis.conf中指定
+      - ${REDIS_CONF_FILE}:/etc/redis.conf:ro # daemonize no 后台运行会导致容器失效,redis也是同理，容器内都应该是前台运行，对比supervisor
+      - ${DATA_DIR}/redis:/data/:rw #是指redis数据持久化后的存放目录
+    restart: always
+    entrypoint: ["redis-server", "/etc/redis.conf"]
+    environment:
+       TZ: "$TZ"
+    networks:
+      - lnmp-net
+networks:
+  lnmp-net:
+    external: true
+

@@ -35,8 +35,11 @@ LNMP项目特点：
 │   └── mongo                   
 │   └── redis        
 │   └── mysql-cluster            
-├── docker-compose.yml         Docker 默认服务配置文件，如果使用其它的，可以 docker-composer -f 文件名
+├── docker-compose.yml         Docker 默认服务配置文件，其它的可以 docker-composer -f 文件名
 ├── docker-compose-mysql-cluster.yml              只包含mysql基于atlas读写分离
+├── docker-compose-memcached.yml                  memcached服务配置
+├── docker-compose-mongo.yml                      mongo服务配置   
+├── docker-compose-redis.yml                      redis服务配置
 ├── .env                       环境配置
 └── www                        PHP 代码目录 可在.env中nginx的WEB_DIR中任意指定
 └── compose                    docker-compose下载可能会很慢，这里附一个
@@ -214,7 +217,8 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
 6. 容器中使用cron的三种方式分析
     1. 使用主机中的cron
     2. 创建一个新容器专门用于cron
-    3. cron和其他进程共用一个容器（比如本次搭建cron和php-fpm共用一个容器，当然docker官方不建议一个容器运行多个进程，本例是使用了shell脚本实现，也可以通过supervisor实现单容器多进程）
+    3. cron和其他进程共用一个容器（比如本次搭建cron和php-fpm共用一个容器，同一个容器的另一个好处就是cron中可以使用php的命令行
+    ，当然docker官方不建议一个容器运行多个进程，本例是使用了shell脚本实现，也可以通过supervisor实现单容器多进程）
     
 ## 十一. 基于docker的mysql配置主从同步
 ### 配置文件
@@ -358,5 +362,13 @@ sql-log = REALTIME # sql日志需开启（默认关闭）且模式是REALTIME（
 [04/03/2020 22:16:35] C:172.21.0.4:48606 S:172.21.0.5:3306 OK 102.693 "SHOW FULL COLUMNS FROM `user`"
 [04/03/2020 22:16:35] C:172.21.0.4:48606 S:172.21.0.3:3306 OK 19.518 "INSERT INTO `user` (`name`, `age`, `sex`) VALUES ('Sam', 30, '0')"
 ```
-## 十三. 官方文档
+
+## 问题
+### 如何使用容器内的php环境来执行主机中（项目一般会挂载在主机）的php脚本？
+1. 参考官网：[https://hub.docker.com/_/php/](https://hub.docker.com/_/php/)
+可以使用php-cli，但这仅仅是一个php-cli环境，比如使用它来执行yii中的命令行，就会提示找不到数据库，还需要配置一个和php-fpm相同的环境？？？
+那还不如直接进入容器执行相关命令来的方便
+
+
+## 官方文档
 1. [https://docs.docker.com/compose/compose-file/](https://docs.docker.com/compose/compose-file/) # `docker-compose.yml`规范文档

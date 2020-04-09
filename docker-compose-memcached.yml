@@ -1,0 +1,17 @@
+version: "3"
+services:
+  memcached:
+    image: memcached:${MEMCACHED_VERSION}
+    container_name: memcached
+    privileged: true
+    ports:
+      - "${MEMCACHED_PORT}:11211"
+    environment:
+           MEMCACHED_CACHE_SIZE: "${MEMCACHED_CACHE_SIZE}"
+    restart: always
+    networks:
+      - lnmp-net
+networks:
+  lnmp-net:
+    external: true
+
