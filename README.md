@@ -35,8 +35,8 @@ LNMP项目特点：
 │   └── mongo                   
 │   └── redis        
 │   └── mysql-cluster            
-├── docker-compose.yml                  Docker 默认服务配置文件，其它的可以 docker-composer -f 文件名
-├── docker-compose-mysql-cluster.yml    只包含mysql基于atlas读写分离
+├── docker-compose.yml                   Docker 默认服务配置文件，其它的可以 docker-composer -f 文件名
+├── docker-compose-mysql-cluster.yml     只包含mysql基于atlas读写分离
 ├── docker-compose-memcached.yml         memcached服务配置
 ├── docker-compose-mongo.yml             mongo服务配置   
 ├── docker-compose-redis.yml             redis服务配置
