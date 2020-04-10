@@ -217,8 +217,20 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
 6. 容器中使用cron的三种方式分析
     1. 使用主机中的cron
     2. 创建一个新容器专门用于cron
-    3. cron和其他进程共用一个容器（比如本次搭建cron和php-fpm共用一个容器，同一个容器的另一个好处就是cron中可以使用php的命令行
-    ，当然docker官方不建议一个容器运行多个进程，本例是使用了shell脚本实现，也可以通过supervisor实现单容器多进程）
+    3. cron和其他进程共用一个容器（一个容器多个服务）
+7. 单容器中运行多服务解释
+    1. > 单服务时 `restart: always` 会在docker重启时、构建容器时自动启动容器，如果加命令`command: ...`来启动其他服务（比如cron），就会导致构建容器时php-fpm不能启动，除非command指定脚本：既启动php-fpm也启动cron<br />
+    2. > 比如本次搭建cron和php-fpm共用一个容器，同一个容器的另一个好处就是cron中可以使用php的命令行。解决1问题的两种方式：
+        1. shell脚本:
+        ```
+        # 在php-fpm容器中打开下面两句即可：
+        # restart: always
+        # command: start.sh
+        ```
+        2. supervisor实现单容器管理多进程
+        > `本环境使用的是supervisor`（[还用到了supervisor来监控yii2中的队列](https://www.yiiframework.com/extension/yiisoft/yii2-queue/doc/guide/2.0/zh-cn/worker#supervisor)）`，修改配置后需重启容器。`
+        `浏览器访问：http://192.168.157.137:9001`
+        
     
 ## 十一. 基于docker的mysql配置主从同步
 ### 配置文件
