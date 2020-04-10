@@ -36,13 +36,12 @@ LNMP项目特点：
 │   └── redis        
 │   └── mysql-cluster            
 ├── docker-compose.yml                   Docker 默认服务配置文件，其它的可以 docker-composer -f 文件名
-├── docker-compose-mysql-cluster.yml     只包含mysql基于atlas读写分离
+├── docker-compose-mysql-cluster.yml     mysql基于atlas读写分离
 ├── docker-compose-memcached.yml         memcached服务配置
 ├── docker-compose-mongo.yml             mongo服务配置   
 ├── docker-compose-redis.yml             redis服务配置
 ├── .env                                 环境配置
 └── www                                  PHP 代码目录 可在.env中nginx的WEB_DIR中任意指定
-└── compose                              docker-compose下载可能会很慢，这里附一个
 ```
 php-fpm容器中 **/usr/local/etc/** 目录结构
 > 该目录下是php和php-fpm的配置文件，默认的结构如下，建议把整个目录挂载出来，方便修改和调试；<br />
@@ -62,7 +61,7 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
 ## 二. 快速使用
 1. 本地安装
     1. `docker` 安装完成后，推荐使用阿里云`docker`加速：[https://help.aliyun.com/document_detail/60750.html](https://help.aliyun.com/document_detail/60750.html)
-    2. `docker-compose` 可能会下载很慢，上面`compose`目录附带一个
+    2. `docker-compose` 可能会下载很慢，[这里](https://pan.baidu.com/s/1ePbVGqjzN3nESOovg4-pKA)目录附一个，提取码 `8o1r`
         1. 复制到 `/usr/local/bin`
         2. `chmod +x /usr/local/bin/docker-compose`
         3. `ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose`
