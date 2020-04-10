@@ -35,14 +35,14 @@ LNMP项目特点：
 │   └── mongo                   
 │   └── redis        
 │   └── mysql-cluster            
-├── docker-compose.yml         Docker 默认服务配置文件，其它的可以 docker-composer -f 文件名
-├── docker-compose-mysql-cluster.yml              只包含mysql基于atlas读写分离
-├── docker-compose-memcached.yml                  memcached服务配置
-├── docker-compose-mongo.yml                      mongo服务配置   
-├── docker-compose-redis.yml                      redis服务配置
-├── .env                       环境配置
-└── www                        PHP 代码目录 可在.env中nginx的WEB_DIR中任意指定
-└── compose                    docker-compose下载可能会很慢，这里附一个
+├── docker-compose.yml                  Docker 默认服务配置文件，其它的可以 docker-composer -f 文件名
+├── docker-compose-mysql-cluster.yml    只包含mysql基于atlas读写分离
+├── docker-compose-memcached.yml         memcached服务配置
+├── docker-compose-mongo.yml             mongo服务配置   
+├── docker-compose-redis.yml             redis服务配置
+├── .env                                 环境配置
+└── www                                  PHP 代码目录 可在.env中nginx的WEB_DIR中任意指定
+└── compose                              docker-compose下载可能会很慢，这里附一个
 ```
 php-fpm容器中 **/usr/local/etc/** 目录结构
 > 该目录下是php和php-fpm的配置文件，默认的结构如下，建议把整个目录挂载出来，方便修改和调试；<br />
