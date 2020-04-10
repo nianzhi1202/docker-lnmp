@@ -379,7 +379,6 @@ sql-log = REALTIME # sql日志需开启（默认关闭）且模式是REALTIME（
 ### 如何使用容器内的php环境来执行主机中（项目一般会挂载在主机）的php脚本？
 1. 参考官网：[https://hub.docker.com/_/php/](https://hub.docker.com/_/php/)
 可以使用php-cli，但这仅仅是一个php-cli环境，比如使用它来执行yii中的命令行，就会提示找不到数据库，还需要配置一个和php-fpm相同的环境？？？
-那还不如直接进入容器执行相关命令来的方便
 
 
 ## 官方文档
