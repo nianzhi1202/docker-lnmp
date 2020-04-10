@@ -56,17 +56,18 @@ RUN apt-get update && apt-get install -y cron \
     && sed --regexp-extended --in-place \
     's/^session\s+required\s+pam_loginuid.so$/session optional pam_loginuid.so/' \
     /etc/pam.d/cron
+# 启动cron和php-fpm，已改用supervisor启动
+# COPY ./start.sh /usr/sbin
+# RUN chmod +x /usr/sbin/start.sh
 # Cron
-# 启动cron和php-fpm
-COPY ./start.sh /usr/sbin
-RUN chmod +x /usr/sbin/start.sh
-# 启动cron和php-fpm
-# pecl安装mongodb、redis、imagick扩展
-#RUN pecl install -o -f mongodb  \
-#    && rm -rf /tmp/pear
 
-# 加入php扩展
-#RUN docker-php-ext-enable memcached
+# Supervisor
+RUN \
+  apt-get update && \
+  apt-get install -y supervisor && \
+  rm -rf /var/lib/apt/lists/*
+CMD ["supervisord", "--nodaemon", "--configuration", "/etc/supervisor/supervisord.conf"]
+# Supervisor
 
 # php swoole扩展
 RUN cd /usr/src \
