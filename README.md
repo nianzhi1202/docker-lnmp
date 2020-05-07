@@ -19,6 +19,7 @@ LNMP项目特点：
 │   ├── mysql                   MySQL 数据目录
 │   └── redis                   Redis 数据目录
 │   └── mysql-cluster           MySQL 集群数据目录
+│   └── elasticsearch           ElasticSearch 集群数据目录
 ├── services                    服务构建文件、配置文件目录
 │   ├── mysql                   MySQL 配置、构建文件
 │   ├── nginx                   Nginx 配置、构建文件
@@ -40,6 +41,7 @@ LNMP项目特点：
 ├── docker-compose-memcached.yml         memcached服务配置
 ├── docker-compose-mongo.yml             mongo服务配置   
 ├── docker-compose-redis.yml             redis服务配置
+├── docker-compose-elasticsearch.yml     elasticsearch服务配置
 ├── .env                                 环境配置
 └── www                                  PHP 代码目录 可在.env中nginx的WEB_DIR中任意指定
 ```
@@ -373,6 +375,18 @@ sql-log = REALTIME # sql日志需开启（默认关闭）且模式是REALTIME（
 [04/03/2020 22:16:35] C:172.21.0.4:48606 S:172.21.0.5:3306 OK 102.693 "SHOW FULL COLUMNS FROM `user`"
 [04/03/2020 22:16:35] C:172.21.0.4:48606 S:172.21.0.3:3306 OK 19.518 "INSERT INTO `user` (`name`, `age`, `sex`) VALUES ('Sam', 30, '0')"
 ```
+
+## 十三. 单机版 ElasticSearch
+### 报错提前解决
+    1. 由于es运行不能是root，es用户要对数据目录有写权限
+    2. max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+        a. 在主机中切换到root用户执行命令：sysctl -w vm.max_map_count=262144
+        b. 查看结果：sysctl -a | grep vm.max_map_count 显示：vm.max_map_count = 262144
+        c. 上述方法修改之后，如果重启虚拟机将失效，解决办法：在 /etc/sysctl.conf文件最后添加一行 vm.max_map_count=262144 可永久修改
+### 登录
+    1. http://192.168.157.138:9200  默认的用户名：elastic 密码：changeme
+    2. http://192.168.157.138:5601  默认的用户名：elastic 密码：changeme
+
 
 ## 问题
 ### 如何使用容器内的php环境来执行主机中（项目一般会挂载在主机）的php脚本？
