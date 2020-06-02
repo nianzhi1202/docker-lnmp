@@ -121,6 +121,17 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
     + $ `update user set host ='％' where user ='root' and host ='localhost';` # 建议这样
     + $ `grant all privileges on *.* to 'root'@'%' identified by 'root' with grant option;` # 与update二选一
     + $ `flush privileges;`
++ 在Yii2.0中的mysql连接
+```
+'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=mysql;port=3306;dbname=hshop',//host是容器名称
+            'username' => 'root',
+            'password' => '123456',
+            'charset' => 'utf8',
+            'tablePrefix' => 'hshop_',
+        ],
+```
 
 ## 六. mongo基本操作
 + 命令行连接mongo
