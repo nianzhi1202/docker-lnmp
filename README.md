@@ -132,6 +132,10 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
             'tablePrefix' => 'hshop_',
         ],
 ```
++ mysql新建一个用户用于远程连接和操作指定库
+    + 创建用户：`create user 'yii'@'%' identified by 'nz123456';`
+    + 授权：`grant all privileges on hshop.* to "yii"@"%" identified by "nz123456";`
+    + 刷新：`flush privileges;`
 
 ## 六. mongo基本操作
 + 命令行连接mongo
