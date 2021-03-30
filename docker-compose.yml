@@ -17,6 +17,7 @@ services:
       - ${NGINX_CONF_FILE}:/etc/nginx/nginx.conf
       - ${NGINX_FASTCGI_PARAMS}:/etc/nginx/fastcgi_params
       - ${LOG_DIR}/nginx:/var/log/nginx/
+      - ${NGINX_MIME}:/etc/nginx/mime.types
     depends_on:
       - php-fpm
     networks:
