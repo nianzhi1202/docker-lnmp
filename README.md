@@ -80,6 +80,15 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
 5. 启动本项目
     1. $ `docker network create --driver bridge lnmp-net` # 创建自定义bridge网络，这个**lnmp-net**在yml配置中用得到
     2. $ `docker-compose up --build --force-recreate`  #可以加 -d 后台运行，调试时不用加，方便查看日志；--force-recreate 这个参数也是为了调试方便，生产一定不用
+    3. 启动后的三个基础容器显示：
+    ```php
+    [root@VM_0_13_centos ~]# docker ps -a
+    CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS                      PORTS                                      NAMES
+    3a0dd4e8968d        docker-lnmp_mysql     "docker-entrypoint.s…"   4 minutes ago       Up 4 minutes                33060/tcp, 0.0.0.0:6666->3306/tcp          mysql
+    c8191d64d5a3        docker-lnmp_nginx     "nginx -g 'daemon of…"   4 minutes ago       Up 4 minutes                0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   nginx
+    5450e694e90b        docker-lnmp_php-fpm   "docker-php-entrypoi…"   4 minutes ago       Up 4 minutes                0.0.0.0:9000-9001->9000-9001/tcp           php-fpm
+    1bdfb82a502b        51e17a6261bd          "/bin/sh -c 'mkdir -…"   10 months ago       Exited (56) 10 months ago                                              hopeful_rosalind
+    ```
 
 ## 三. docker常用命令
 - $ `systemctl start docker`    # 启动docker
