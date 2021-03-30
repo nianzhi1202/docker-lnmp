@@ -125,7 +125,8 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
 ```
 'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=mysql;port=3306;dbname=hshop',//host是容器名称
+            //host是容器名称,port是my.cnf中配置的端口，而不是在.env中配置.yml中引用的对外端口
+            'dsn' => 'mysql:host=mysql;port=3306;dbname=hshop',
             'username' => 'root',
             'password' => '123456',
             'charset' => 'utf8',
@@ -136,6 +137,7 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
     + 创建用户：`create user 'yii'@'%' identified by 'nz123456';`
     + 授权：`grant all privileges on hshop.* to "yii"@"%" identified by "nz123456";`
     + 刷新：`flush privileges;`
+    + 端口：`是指在.env中配置的对外端口，这个和上面'db'连接数据库不同`
 
 ## 六. mongo基本操作
 + 命令行连接mongo
