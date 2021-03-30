@@ -11,6 +11,7 @@ services:
     restart: always
     ports:
       - "${NGINX_PORT}:80"
+      - "443:443" #如果有https则需打开443端口，上面的80端口也要打开（因为可能有需要把80跳转443的场景）
     volumes:
       - ${WEB_DIR}:${WEB_DIR}:rw
       - ${NGINX_CONFD_DIR}:/etc/nginx/conf.d/
