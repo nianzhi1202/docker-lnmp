@@ -13,7 +13,7 @@ LNMP项目特点：
 
 ## 一. 目录结构
 
-```
+```php
 ├── data                        数据库数据目录
 │   ├── mongo                   MongoDB 数据目录
 │   ├── mysql                   MySQL 数据目录
@@ -48,7 +48,7 @@ LNMP项目特点：
 php-fpm容器中 **/usr/local/etc/** 目录结构
 > 该目录下是php和php-fpm的配置文件，默认的结构如下，建议把整个目录挂载出来，方便修改和调试；<br />
 > 建议：对于所有的配置文件的挂载都先生成默认文件、目录，然后再修改、调优；
-```
+```php
 ├── php                                          php配置目录
 │   ├── php.ini-development                      php.ini开发环境
 │   ├── php.ini-production                       php.ini生产环境
@@ -131,7 +131,7 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
     + $ `grant all privileges on *.* to 'root'@'%' identified by 'root' with grant option;` # 与update二选一
     + $ `flush privileges;`
 + 在Yii2.0中的mysql连接
-```
+```php
 'db' => [
             'class' => 'yii\db\Connection',
             //host是容器名称,port是my.cnf中配置的端口，而不是在.env中配置.yml中引用的对外端口
@@ -157,7 +157,7 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
     + 输入验证：`db.auth("root","123456")`
 + php常用的mongo客户端有两个：mongo和mongodb，这里使用mongodb
     + php中查询测试：
-    ```
+    ```php
         <?php
         	$manager = new MongoDB\Driver\Manager("mongodb://root:123456@mongo:27017");  
         	// 插入数据
@@ -190,7 +190,7 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
 ## 八. memcached使用
 1. mem常用的php客户端有两个：`memcached`和`memcache`，这里使用`memcached`
 2. yii2默认支持`memcached`作为缓存系统，只需如下配置：在`common/config/main-local.php`中
-    ```
+    ```php
    'cache' => [
             'class' => 'yii\caching\MemCache',
             'servers' => [
@@ -209,7 +209,7 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
 ## 九. redis使用
 1. 使用`predis`客户端，直接在项目中`composer require predis/predis`安装即可
 2. 连接测试，需注意host是容器名称
-   ```
+   ```php
    <?php
    namespace backend\controllers;
    use Predis\Autoloader;
@@ -276,7 +276,7 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
    ```
 2. 查看master节点的binlog状态，记住这个File和Position的值。
     最好每次`show master status;`前都 `flush privileges;`获取的值才准确
-    ```
+    ```php
     mysql> show master status;
     +------------------+----------+--------------+------------------+-------------------+
     | File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
@@ -295,7 +295,7 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
     4. `master_port` 一定是master容器中mysql的端口，而不是映射到主机的端口
 3. $ `start slave;` # 开启
 4. 查看主从是否成功
-```
+```php
 mysql> show slave status\G;
 *************************** 1. row ***************************
                Slave_IO_State: Waiting for master to send event
@@ -330,7 +330,7 @@ mysql> show slave status\G;
     3. -P 端口是在`test.cnf`中配置的管理接口的端口
 2. $ `select * from help;` # 进入atlas后，命令帮助来显示所有命令
 3. 命令记录
-```
+```php
 mysql> select * from help;
 +----------------------------+---------------------------------------------------------+
 | command                    | description                                             |
@@ -370,7 +370,7 @@ mysql> SELECT * FROM backends
     3. 用户：atlas配置文件中的 `pwds` 
 5. `yii2.0`中连接atlas，测试curd
 > 在/common/config/main-local.php中：
- ```
+ ```php
 'db' => [
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=centos;port=1234;dbname=order',#用php连接atlas使用容器名
@@ -380,7 +380,7 @@ mysql> SELECT * FROM backends
 ],
  ```
 > 测试写入
-```
+```php
 return Yii::$app->db->createCommand()->insert('user', [
             'name' => 'Sam',
             'age' => 30,
