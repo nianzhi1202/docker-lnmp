@@ -45,8 +45,8 @@ services:
       - ${LOG_DIR}/cron/cron.log:/var/log/cron.log
       - ${LOG_DIR}/supervisor/supervisord.log:/var/log/supervisord.log
       - ./services/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
-#    restart: always 改用supervisor
-#    command: start.sh
+    restart: always
+    command: start.sh
     networks:
       - lnmp-net
 

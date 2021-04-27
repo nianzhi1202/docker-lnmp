@@ -56,9 +56,9 @@ RUN apt-get update && apt-get install -y cron \
     && sed --regexp-extended --in-place \
     's/^session\s+required\s+pam_loginuid.so$/session optional pam_loginuid.so/' \
     /etc/pam.d/cron
-# 启动cron和php-fpm，已改用supervisor启动
-# COPY ./start.sh /usr/sbin
-# RUN chmod +x /usr/sbin/start.sh
+# 启动cron和supervisord，supervisord不能直接启动cron，把需要使用supervisord监控的放在supervisord.conf中，不能使用的放在start.sh脚本中
+COPY ./start.sh /usr/sbin
+RUN chmod +x /usr/sbin/start.sh
 # Cron
 
 # Supervisor
@@ -66,7 +66,7 @@ RUN \
   apt-get update && \
   apt-get install -y supervisor && \
   rm -rf /var/lib/apt/lists/*
-CMD ["supervisord", "--nodaemon", "--configuration", "/etc/supervisor/supervisord.conf"]
+# CMD ["supervisord", "--nodaemon", "--configuration", "/etc/supervisor/supervisord.conf"]
 # Supervisor
 
 # php swoole扩展
