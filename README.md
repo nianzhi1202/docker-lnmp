@@ -236,16 +236,17 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
 1. 区分`cron`和`crond`：都是做计划任务的，不同的系统中进程名称不一样。由于容器中没有yum命令（当然也可以安装），就用了Ubuntu的apt-get下载相关应用
 2. `/etc/crontab`任务文件挂载到了`services/php/cron/crontab`，直接修改即可（和`crontab -e`的区别：百度），挂载到项目目录修改更方便
 3. 一定注意`crontab`文件的权限只能是`644`，否则任务不会被执行，如果是启动后才修改权限为644，需要进容器重启cron
-4. cron的相关命令
+4. 当文件权限不是777时，使用vim修改文件会导致iNode发生变化，挂载就不能同步，这时需要设置vim，`vim /etc/vimrc ` 添加： `set backupcopy=yes`
+5. cron的相关命令
     1. `service cron status` # 查看cron状态
     2. `service cron start`  # 启动cron
     3. `service cron stop`   # 停止cron
-5. 测试 `* * * * * root echo 123 >> /tmp/60.txt`
-6. 容器中使用cron的三种方式分析
+6. 测试 `* * * * * root echo 123 >> /tmp/60.txt`
+7. 容器中使用cron的三种方式分析
     1. 使用主机中的cron
     2. 创建一个新容器专门用于cron
     3. cron和其他进程共用一个容器（一个容器多个服务）
-7. 单容器中运行多服务解释
+8. 单容器中运行多服务解释
     1. > 单服务时 `restart: always` 会在docker重启时、构建容器时自动启动容器，如果加命令`command: ...`来启动其他服务（比如cron），就会导致构建容器时php-fpm不能启动，除非command指定脚本：既启动php-fpm也启动cron<br />
     2. > 比如本次搭建cron和php-fpm共用一个容器，同一个容器的另一个好处就是cron中可以使用php的命令行。解决1问题的两种方式：
         1. shell脚本:
