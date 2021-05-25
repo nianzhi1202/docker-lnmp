@@ -91,6 +91,7 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
     ```
 6. 镜像官网 https://hub.docker.com
     + 可以查看镜像原始的Dockerfile，从而了解镜像基于什么系统
+    + 
     
     
 
