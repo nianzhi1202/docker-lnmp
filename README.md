@@ -63,10 +63,10 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
 ## 二. 快速使用
 1. 本地安装
     1. `docker` 安装完成后，推荐使用阿里云`docker`加速：[https://help.aliyun.com/document_detail/60750.html](https://help.aliyun.com/document_detail/60750.html)
-    2. `docker-compose` 可能会下载很慢，[这里附一个](https://pan.baidu.com/s/1ePbVGqjzN3nESOovg4-pKA)，提取码 `8o1r`
-        1. 复制到 `/usr/local/bin`
-        2. `chmod +x /usr/local/bin/docker-compose`
-        3. `ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose`
+    2. `docker-compose`安装
+        1. 下载：`sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose`
+        2. 可执行权限：`chmod +x /usr/local/bin/docker-compose`
+        3. 软连接：`ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose`
         4. 测试安装：`docker-compose --version`
 
 2. `clone`项目：
@@ -89,6 +89,10 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
     5450e694e90b        docker-lnmp_php-fpm   "docker-php-entrypoi…"   4 minutes ago       Up 4 minutes                0.0.0.0:9000-9001->9000-9001/tcp           php-fpm
     1bdfb82a502b        51e17a6261bd          "/bin/sh -c 'mkdir -…"   10 months ago       Exited (56) 10 months ago                                              hopeful_rosalind
     ```
+6. 镜像官网 https://hub.docker.com
+    + 可以查看镜像原始的Dockerfile，从而了解镜像基于什么系统
+    
+    
 
 ## 三. docker常用命令
 - $ `systemctl start docker`    # 启动docker
