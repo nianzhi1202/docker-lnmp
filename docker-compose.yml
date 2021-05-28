@@ -81,6 +81,7 @@ services:
     volumes:
       - ${WEB_DIR}:${WEB_DIR}:rw
     restart: always
+    tty: true
     networks:
       - lnmp-net
 
