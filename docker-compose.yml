@@ -70,6 +70,20 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
 
+  node:
+    build:
+      context: ./services/node
+    container_name: node
+    privileged: true
+    env_file: .env
+    ports:
+      - "${NODE_PORT}:8081"
+    volumes:
+      - ${WEB_DIR}:${WEB_DIR}:rw
+    restart: always
+    networks:
+      - lnmp-net
+
 networks:
   lnmp-net:
     external: true
