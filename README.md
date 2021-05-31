@@ -103,14 +103,15 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
 - $ `docker rm containername` # 删除容器
 - $ `docker rmi image` # 删除镜像
 
-- $ `docker-compose up` # 启动所有容器 
+- $ `docker-compose up` # 启动所有容器，会重新加载.yml文件，但不会重新加载Dockerfile，若是修改了Dockerfile则需要 --build
 - $ `docker-compose up nginx php mysql` # 启动指定容器
 - $ `docker-compose up -d nginx php mysql` # 后台运行方式启动指定容器 
 - $ `docker-compose up --build --force-recreate` # 强制启动
 - $ `docker-compose start php` # 启动服务
 - $ `docker-compose stop php` # 停止服务
-- $ `docker-compose restart php` # 重启服务
+- $ `docker-compose restart php` # 重启服务，但不会重新加载.yml文件
 - $ `docker-compose build php` # 使用Dockerfile构建服务
+- $ `docker-compose exec 13a676bb9bff\php bash` # 进入容器
 
 ## 四. docker网络模式
 > docker 网络模式是学习docker不可或缺的一部分，搞懂这块才能轻松应对容器间的连接
