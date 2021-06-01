@@ -127,8 +127,35 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
 1. bridge模式下可以通过**容器名称进行容器间的通信**
 2. 多个容器可以使用同一个`docker-compose.yml`是**无需使用--link**来连接的
 3. 本实例使用都是自定义bridge，关于docker网络模式更多知识，自行查阅文档
+
+## 五. docker日志
+1. 日志配置的两种方式
+    + 在.yml文件中通过logging参数配置，可以为每个容器定制化配置
+    ```php
+    logging: 
+             driver: "json-file"
+             options: 
+               max-size: "500m"
+    ```
+    + docker 全局配置 /etc/docker/daemon.json，所有容器统一配置
+    ```php
+    {
+       "registry-mirrors":[
+           "https://knmvz0py.mirror.aliyuncs.com"
+       ],
+       "log-driver":"json-file",
+       "log-opts":{
+           "max-size":"500m",
+           "max-file":"3"
+       }
+    }
+    ```
+2. 日志位置
+    + 在linux上，容器日志一般存放在/var/lib/docker/containers/下，可根据需要删除
+3. 查看命令
+    +  docker-compose logs -f --tail 10 mysql
      
-## 五. Mysql基本操作
+## 六. Mysql基本操作
 + 远程连接需要进入容器登录mysql授权
     + $ `docker exec -it mysql /bin/bash`
     + $ `mysql -uroot -p123456`
@@ -154,7 +181,7 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
     + 刷新：`flush privileges;`
     + 端口：`是指在.env中配置的对外端口，这个和上面'db'连接数据库不同`
 
-## 六. mongo基本操作
+## 七. mongo基本操作
 + 命令行连接mongo
     + $ `docker exec -it 容器 /bin/bash`
     + $ `mongo` 即可操作mongo命令行
@@ -186,14 +213,14 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
         ?>
     ```
     
-## 七. nginx配置说明
+## 八. nginx配置说明
 + 默认的nginx配置已支持yii2的运行
 + 如项目放在 `/var/www/order`
     + .env中，`WEB_DIR=/var/www/order`
     + nginx.conf中， `root /var/www/order/backend/web;`
 + nginx和php-fpm必须挂载相同的项目目录，否则会导致静态文件可以访问，php无法访问
 
-## 八. memcached使用
+## 九. memcached使用
 1. mem常用的php客户端有两个：`memcached`和`memcache`，这里使用`memcached`
 2. yii2默认支持`memcached`作为缓存系统，只需如下配置：在`common/config/main-local.php`中
     ```php
@@ -212,7 +239,7 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
     
 3. 其他框架的环境正常连接即可，只需注意host是容器的名称，不能使用ip
 
-## 九. redis使用
+## 十. redis使用
 1. 使用`predis`客户端，直接在项目中`composer require predis/predis`安装即可
 2. 连接测试，需注意host是容器名称
    ```php
@@ -238,7 +265,7 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
    }
    ```
 
-## 十. cron的使用
+## 十一. cron的使用
 1. 区分`cron`和`crond`：都是做计划任务的，不同的系统中进程名称不一样。由于容器中没有yum命令（当然也可以安装），就用了Ubuntu的apt-get下载相关应用
 2. `/etc/crontab`任务文件挂载到了`services/php/cron/crontab`，直接修改即可（和`crontab -e`的区别：百度），挂载到项目目录修改更方便
 3. 一定注意`crontab`文件的权限只能是`644`，否则任务不会被执行，如果是启动后才修改权限为644，需要进容器重启cron
@@ -266,7 +293,7 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
         `浏览器访问：http://192.168.157.137:9001`
         
     
-## 十一. 基于docker的mysql配置主从同步
+## 十二. 基于docker的mysql配置主从同步
 ### 配置文件
 1. 关键点
     ```
@@ -320,7 +347,7 @@ mysql> show slave status\G;
 ```
 5. 到此主从就可以正常使用了，**平滑重启mysql** `docker stop name`、`docker start name`，不要去--force-recreate，这样就只能重新查看File、Position来重新配置了
 
-## 十二. 主从同步的基础上加入atlas
+## 十三. 主从同步的基础上加入atlas
 ### 安装前
 1. `atlas` 官方文档 `https://github.com/Qihoo360/Atlas/wiki`
 2. 本实例是在`centos`镜像下使用使用官方推荐的rpm方式安装了`atlas`
@@ -409,7 +436,7 @@ sql-log = REALTIME # sql日志需开启（默认关闭）且模式是REALTIME（
 [04/03/2020 22:16:35] C:172.21.0.4:48606 S:172.21.0.3:3306 OK 19.518 "INSERT INTO `user` (`name`, `age`, `sex`) VALUES ('Sam', 30, '0')"
 ```
 
-## 十三. 单机版 ElasticSearch
+## 十四. 单机版 ElasticSearch
 ### 报错提前解决
     1. 由于es运行不能是root，es用户要对数据目录有写权限
     2. max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
@@ -428,7 +455,7 @@ sql-log = REALTIME # sql日志需开启（默认关闭）且模式是REALTIME（
 -->
 
 
-## 官方文档
+## 十五. 官方文档
 1. [https://docs.docker.com/compose/compose-file/](https://docs.docker.com/compose/compose-file/) # `docker-compose.yml`规范文档
-
+2. [https://hub.docker.com/](https://hub.docker.com/)
 ### 如有错误敬请指正（issues）
