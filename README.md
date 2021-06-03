@@ -92,7 +92,17 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
 6. 镜像官网 https://hub.docker.com
     + 可以查看镜像原始的Dockerfile，从而了解镜像基于什么系统
     + 
-    
+7. docker项目开机自启动
+    + 在`/etc/init.d/`下添加文件
+    ```php
+    # docker.service
+    # !/bin/sh
+    # 启动docker
+    sudo systemctl start docker
+    # 启动项目
+    sudo docker-compose -f /var/www/docker-lnmp/docker-compose.yml up --build -d
+    ```
+   +
     
 
 ## 三. docker常用命令
