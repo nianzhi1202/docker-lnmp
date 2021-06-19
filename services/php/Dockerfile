@@ -69,6 +69,13 @@ RUN \
 # CMD ["supervisord", "--nodaemon", "--configuration", "/etc/supervisor/supervisord.conf"]
 # Supervisor
 
+# Redis
+RUN \
+  pecl install -o -f redis && \
+  echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini && \
+  rm -rf /tmp/pear
+# Redis
+
 # php swoole扩展
 RUN cd /usr/src \
     && pecl download swoole-${SWOOLE_VERSION} \
@@ -92,3 +99,6 @@ RUN mkdir -p /usr/local/share/composer \
     && rm -f /tmp/composer-setup.* \
     # 配置composer中国全量镜像
     && composer config -g repo.packagist composer https://packagist.phpcomposer.com
+
+# 写权限 1001 是www-data这个用户的id
+RUN usermod -u 1001 www-data
