@@ -303,7 +303,17 @@ php-fpm容器中 **/usr/local/etc/** 目录结构
         2. supervisor实现单容器管理多进程
         > `本环境使用的是supervisor`（[还用到了supervisor来监控yii2中的队列](https://www.yiiframework.com/extension/yiisoft/yii2-queue/doc/guide/2.0/zh-cn/worker#supervisor)）`，修改配置后需重启容器。`
         `浏览器访问：http://192.168.157.137:9001`
-        
+9. supervisor使用注意（非docker也适用）
+    1. 使用`supervisord`和`supervisorctl`时，很有可能遇到这个报错：`No such file or directory: file: /usr/lib64/python2.7/socket.py`，
+    一般都是权限的问题，可以使用root权限执行，如：`sudo /usr/bin/python2 /usr/bin/supervisord -c /etc/supervisord.conf`，
+    还有可能是配置文件中指定的socket、日志文件等没有权限，如下两种：两个sock都指向了/tmp
+    ```
+   [unix_http_server]
+   file=/tmp/supervisor.sock   ; (the path to the socket file)
+   [supervisorctl]
+    serverurl=unix:///tmp/supervisor.sock ; use a unix:// URL  for a unix socket
+   ```
+    
     
 ## 十二. 基于docker的mysql配置主从同步
 ### 配置文件
